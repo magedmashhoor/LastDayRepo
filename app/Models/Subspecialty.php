@@ -16,4 +16,8 @@ class Subspecialty extends Model
         return $this->belongsTo(Specialty::class);
     }
 
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

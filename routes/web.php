@@ -9,8 +9,10 @@ use App\Http\Controllers\SubspecialtyController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HealthFacilityController;
-
-
+use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorFacilityScheduleController;
+use App\Http\Controllers\DoctorAbsenceController;
+use App\Http\Controllers\HomeController;
 
 //Route of Governorate
 Route::get('/admin/governorates/create', [GovernorateController::class, 'create'])->name('governorates.create');//http://127.0.0.1:8000/admin/governorates/create
@@ -74,13 +76,42 @@ Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('us
 ////Route of HealthFacility
 
 
-Route::get('/admin/HealthFacility/create', [HealthFacilityController::class, 'create'])->name('health_facilities.create');
+Route::get('/admin/HealthFacility/create', [HealthFacilityController::class, 'create'])->name('health_facilities.create');//http://127.0.0.1:8000/admin/HealthFacility/create
 Route::post('/admin/HealthFacility', [HealthFacilityController::class, 'store'])->name('health_facilities.store');
 Route::patch('/admin/HealthFacility/{healthFacility}', [HealthFacilityController::class, 'update'])->name('health_facilities.update');
 Route::delete('/admin/HealthFacility/{healthFacility}', [HealthFacilityController::class, 'destroy'])->name('health_facilities.destroy');
 
+
+////Route of Doctor
+
+
+Route::get('/admin/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');//http://127.0.0.1:8000/admin/doctors/create
+Route::post('/admin/doctors', [DoctorController::class, 'store'])->name('doctors.store');
+Route::patch('/admin/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
+Route::delete('/admin/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+
+//Rout of Doctor Schedules
+
+
+Route::get('/admin/schedules/create', [DoctorFacilityScheduleController::class, 'create'])->name('schedules.create'); // http://127.0.0.1:8000/admin/schedules/create
+Route::post('/admin/schedules', [DoctorFacilityScheduleController::class, 'store'])->name('schedules.store');
+Route::patch('/admin/schedules/{schedule}', [DoctorFacilityScheduleController::class, 'update'])->name('schedules.update');
+Route::delete('/admin/schedules/{schedule}', [DoctorFacilityScheduleController::class, 'destroy'])->name('schedules.destroy');
+
+//Route Of Doctor Absence
+
+
+Route::get('/admin/absences/create', [DoctorAbsenceController::class, 'create'])->name('absences.create');// http://127.0.0.1:8000/admin/absences/create
+Route::post('/admin/absences', [DoctorAbsenceController::class, 'store'])->name('absences.store');
+Route::patch('/admin/absences/{absence}', [DoctorAbsenceController::class, 'update'])->name('absences.update');
+Route::delete('/admin/absences/{absence}', [DoctorAbsenceController::class, 'destroy'])->name('absences.destroy');
 // Route::prefix('admin')->group(function () {
 //     Route::resource('health_facilities', HealthFacilityController::class)->only([
 //         'create', 'store', 'update', 'destroy'
 //     ]);
 // });
+
+//home page 
+//Route::get('/admin/homepage/index', [HomeController::class, 'index'])->name('homepage.index');// http://127.0.0.1:8000/admin/homepage/index
+//Route::get('/admin/homepage', [HomeController::class, 'index'])->name('homepage.index');
+Route::get('/admin/homepage/index', [HomeController::class, 'index'])->name('homepage.index');

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('facility_name');
             $table->string('facility_type');
-            $table->text('address');
+            $table->string('address')->nullable();
+
             $table->unsignedBigInteger('governorate_id');
             $table->unsignedBigInteger('district_id');
             $table->string('phone_number_1')->nullable();
