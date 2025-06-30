@@ -1,0 +1,98 @@
+name: Deploy Laravel to Bluehost Subdomain
+on:
+  push:
+    branches: [ "main" ]  # or "master", if your main branch is named that
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # 2. Set up PHP and Composer
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, openssl, pdo, tokenizer, xml, ctype, fileinfo
+      # 3. Install PHP dependencies
+      #- name: Install Composer dependencies
+      #  run: composer install --no-dev --optimize-autoloader
+      # 4. Set up Node.js
+      #- name: Set up Node.js
+      # uses: actions/setup-node@v3
+      #  with:
+      #    node-version: '20'
+      # 5. Install and build frontend assets
+      #- name: Install Node dependencies and build assets
+      #  run: |
+      #    npm ci
+      #    npm run build
+      # 6. Generate .env from GitHub Secrets
+      - name: Generate .env from GitHub Secrets
+        run: |
+          echo 'APP_NAME="منصة الإبتزاز اللإلكتروني"' > .env
+          echo "APP_ENV=production" >> .env
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
+          echo "APP_DEBUG=false" >> .env
+          echo "APP_URL=https://your-subdomain.example.com" >> .env
+          echo "LOG_CHANNEL=stack" >> .env
+          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
+          echo "LOG_LEVEL=debug" >> .env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "BROADCAST_DRIVER=log" >> .env
+          echo "CACHE_DRIVER=file" >> .env
+          echo "FILESYSTEM_DISK=local" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          echo "SESSION_DRIVER=file" >> .env
+          echo "SESSION_LIFETIME=120" >> .env
+          echo "REDIS_HOST=127.0.0.1" >> .env
+          echo "REDIS_PASSWORD=null" >> .env
+          echo "REDIS_PORT=6379" >> .env
+          echo "MAIL_MAILER=smtp" >> .env
+          echo "MAIL_HOST=mail.example.com" >> .env
+          echo "MAIL_PORT=587" >> .env
+          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+          echo "MAIL_ENCRYPTION=tls" >> .env
+          echo "MAIL_FROM_ADDRESS=${{ secrets.MAIL_FROM_ADDRESS }}" >> .env
+          echo 'MAIL_FROM_NAME="عنوان البريد الألكتروني"' >> .env
+      # 7. Prepare deployment folder (EXCLUDE storage)
+      - name: Prepare deployment folder
+        run: |
+          mkdir deploy
+          rsync -av --progress ./ deploy/ \
+            --exclude=.git --exclude=tests --exclude=.github \
+            --exclude=node_modules --exclude=storage
+      # 8. Upload to Bluehost via FTP
+      - name: Upload to Bluehost FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: deploy/
+          server-dir: /public_html/
+          dangerous-clean-slate: false
+          exclude: |
+           **/vendor/**
+           **/node_modules/**
+
+React
+
+Reply
+
+
+
+
+
+
+
+
+
+
