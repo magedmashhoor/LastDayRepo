@@ -35,7 +35,7 @@ jobs:
           echo "APP_ENV=production" >> .env
           echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
           echo "APP_DEBUG=false" >> .env
-          echo "APP_URL=https://your-subdomain.example.com" >> .env
+          echo "APP_URL=https://maged.aden.vip" >> .env
           echo "LOG_CHANNEL=stack" >> .env
           echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
           echo "LOG_LEVEL=debug" >> .env
