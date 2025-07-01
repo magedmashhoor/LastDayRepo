@@ -36,5 +36,7 @@ class DayController
         $day->delete();
         return redirect()->route('days.create')->with('success', 'تم حذف اليوم.');
     }
+
+    //check update on 1-7-2025
    
 }
